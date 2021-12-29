@@ -26,7 +26,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     QueryWrapper<SysRole> wrapper =new QueryWrapper<>();
     //条件查询
     if (StringUtils.isNotEmpty(req.getName())){
-      wrapper.like("name",req.getName());
+      wrapper.like("name",req.getName()); 
     }
     wrapper.orderByDesc("update_date");
     return  Result.ok(baseMapper.selectPage(req.getPage(),wrapper) );
