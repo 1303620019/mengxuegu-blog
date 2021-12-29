@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mengxuegu.blog.question.mapper.ReplayMapper">
+    <!--通过文章id递归查询所有回答, 先查一级回答-->
+    <select id="findByQuestionId" resultMap="replayResultMap" >
+    SELECT * FROM mxg_replay WHERE parent_id = -1
+    AND question_id = #{questionId}
+    ORDER BY create_date DESC
+    </select>
+     <!--    递归查询回答的子评论-->
+    <select id="findByParentId" resultMap="replayResultMap">
+      SELECT * FROM mxg_replay WHERE parent_id = #{id}
+    </select>
+    <resultMap id="replayResultMap" type="Replay">
+        <id column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="user_id" property="userId"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="user_image" property="userImage"/>
+        <result column="question_id" property="questionId"/>
+        <result column="md_content" property="mdContent"/>
+        <result column="html_content" property="htmlContent" />
+        <result column="create_date" property="createDate" />
+        <!-- 映射一对多关系（映射集合）
+        property: 对应 Category 的属性名
+        javaType: 属性的数据类型
+        ofType: 配置集合内部的数据类型
+        column： 使用此字段值,去作为 findByParentId 的条件
+        -->
+        <collection property="children" javaType="list" ofType="Replay"
+                    column="id" select="findByParentId"/>
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mengxuegu.blog.question.mapper.QuestionMapper">
+
+
+    <select id="findListByLabelId" resultType="Question">
+    select distinct
+           m1.*
+        FROM  mxg_question m1
+        LEFT JOIN mxg_question_label m2 ON m1.id = m2.question_id
+        WHERE
+        m1.`status` != 0
+        AND m2.label_id = #{labelId}
+        ORDER BY
+        m1.update_date DESC
+    </select>
+
+    <!--根据问题ID查询问题详情与标签ids-->
+    <select id="findQuestionAndLabelIdsById" resultMap="QuestionAndLabelIdsMap">
+        SELECT q.*, ql.label_id
+        FROM mxg_question q
+        LEFT JOIN mxg_question_label ql ON q.id = ql.question_id
+        WHERE q.id = #{id}
+    </select>
+    <resultMap id="QuestionAndLabelIdsMap" type="Question">
+        <!--映射主键-->
+        <id column="id" property="id"/>
+        <!--映射一对一-->
+        <result column="user_id" property="userId"/>
+        <result column="nick_name" property="nickName"/>
+        <result column="user_image" property="userImage"/>
+        <result column="title" property="title"/>
+        <result column="md_content" property="mdContent"/>
+        <result column="html_content" property="htmlContent"/>
+        <result column="view_count" property="viewCount"/>
+        <result column="thumhup" property="thumhup"/>
+        <result column="reply" property="reply"/>
+        <result column="status" property="status"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
+        <!-- 映射一对多关系（映射集合）
+            property: 对应 Category 的属性名
+            javaType: 属性的数据类型
+            ofType: 配置集合内部的数据类型
+         -->
+        <!--封装标签ID集合-->
+        <collection property="labelIds" javaType="list" ofType="String">
+            <!-- 映射主键 -->
+            <id column="label_id" property="id"/>
+        </collection>
+
+    </resultMap>
+    <!--通过问题 id 删除问题标签中间表-->
+    <delete id="deleteQuestionLabel">
+        DELETE FROM mxg_question_label where question_id = #{questionId}
+    </delete>
+    <!--新增问题标签中间表数据-->
+    <!-- 注意调用方法获取id值时，包名前和方法名前都有@符号，共两个@
+    要手动指定 id，不然报错 Field 'id' doesn't have a default value
+    -->
+    <insert id="saveQuestionLabel">
+       INSERT INTO mxg_question_label(id, question_id, label_id) VALUES
+       <foreach collection="labelIds"  item="item" separator=",">
+           ('${@com.baomidou.mybatisplus.core.toolkit.IdWorker@getId()}', #{questionId}, #
+           {item})
+       </foreach>
+    </insert>
+
+</mapper>

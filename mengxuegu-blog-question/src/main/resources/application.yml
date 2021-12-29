@@ -1,0 +1,54 @@
+#swagger:
+#  title: 梦学谷博客系统接口文档
+#  description: 梦学谷博客系统—问答管理接口
+#  exclude-path: /error # 剔除请求
+#
+#server:
+#  port: 8002
+#  servlet:
+#    context-path: /question
+#
+#spring:
+#  application:
+#    name: question-server # 应用名
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 152.136.103.248:8848
+#  # 数据源配置
+#  datasource:
+#    username: root
+#    password: Bian2612909
+#    url: jdbc:mysql://152.136.103.248:3306/mxg_blog_question?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+#    #mysql8版本以上驱动包指定新的驱动类
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    #   数据源其他配置, 在 DruidConfig配置类中手动绑定
+#    initialSize: 8
+#    minIdle: 5
+#    maxActive: 20
+#    maxWait: 60000
+#    timeBetweenEvictionRunsMillis: 60000
+#    minEvictableIdleTimeMillis: 300000
+#    validationQuery: SELECT 1 FROM DUAL
+#
+#mybatis-plus:
+#  type-aliases-package: com.mengxuegu.blog.entities
+#  # xxxMapper.xml 路径
+#  mapper-locations: classpath*:com/mengxuegu/blog/question/mapper/**/*.xml
+#
+## 日志级别，会打印sql语句
+#logging:
+#  level:
+#    com.mengxuegu.blog.question.mapper: debug
+#
+#mengxuegu:
+#  blog:
+#    # 阿里云配置
+#    aliyun:
+#      # 要带上 https:// ,上传时要使用的
+#      endpoint: https://oss-cn-shenzhen.aliyuncs.com
+#      accessKeyId: LTAI5PhVZHhILhHy # 根据自己的帐号配置
+#      accessKeySecret:  bqGlgArM6VRtLJMF8NYz9wKlDnG3G5 # 根据自己的帐号配置
+#      bucketName: 1039t3 # 存储空间名称
+#      # Bucket域名，访问文件时作为URL前缀，注意要加上 https:// 和 结尾带上 /
+#      bucketDomain: https://oss-cn-beijing.aliyuncs.com/

@@ -1,0 +1,7 @@
+# Project exclude paths
+/mengxuegu-blog-api/target/
+/mengxuegu-blog-article/target/
+/mengxuegu-blog-generator/target/
+/mengxuegu-blog-question/target/
+/mengxuegu-blog-system/target/
+/mengxuegu-blog-util/target/
